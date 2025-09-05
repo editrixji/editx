@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Editrix — Editing & Graphic Design (Gurjot Singh)</title>
+  <meta name="description" content="Editrix — Video editing & graphic design. Contact: editrix.ji@gmail.com" />
+  <meta name="theme-color" content="#ffd400" />
+  <style>
+    /* --- Simple theme and layout (yellow/black/white) --- */
+    :root{
+      --yellow:#ffd400;
+      --black:#0b0b0b;
+      --white:#ffffff;
+      --muted:#9a9a9a;
+      --accent:#ffd400;
+      --radius:12px;
+      --card-shadow: 0 10px 30px rgba(0,0,0,.35);
+      --maxw:1100px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,Arial;color:var(--white);background:linear-gradient(180deg,var(--black),#050505 70%);-webkit-font-smoothing:antialiased}
+    a{color:inherit}
+    .container{width:min(var(--maxw),94%);margin:0 auto;padding:18px}
+    nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:44px;height:44px;border-radius:10px;background:var(--yellow);display:grid;place-items:center;color:#111;font-weight:800}
+    .navlinks{display:flex;gap:12px;align-items:center}
+    .btn{padding:8px 14px;border-radius:999px;font-weight:700;border:0;cursor:pointer}
+    .btn-primary{background:var(--yellow);color:#111}
+    .hero{display:grid;grid-template-columns:1fr 0.95fr;gap:24px;align-items:center;padding:28px 0}
+    h1{font-size:clamp(26px,4vw,44px);margin:8px 0}
+    .lead{color:var(--muted)}
+    section{padding:30px 0}
+    .services{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .card{background:#0f0f0f;padding:16px;border-radius:12px;box-shadow:var(--card-shadow);border:1px solid rgba(255,255,255,.03)}
+    .portfolio{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .work{border-radius:10px;overflow:hidden;background:#0a0a0a;border:1px solid rgba(255,255,255,.02)}
+    .work img{width:100%;height:150px;object-fit:cover;display:block;transition:transform .45s}
+    .work:hover img{transform:scale(1.06)}
+    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .price{font-size:22px;color:var(--yellow);font-weight:800}
+    /* contact and chat */
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    input, textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:transparent;color:#fff}
+    .chat-toggle{position:fixed;right:16px;bottom:16px;background:var(--yellow);color:#111;padding:10px 14px;border-radius:999px;z-index:999;cursor:pointer}
+    .chatbox{position:fixed;right:16px;bottom:78px;width:360px;max-width:94vw;background:#0b0b0b;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.04);display:none;flex-direction:column;z-index:999}
+    .chatbox.open{display:flex}
+    .chat-messages{height:220px;overflow:auto;margin-bottom:8px}
+    .msg{padding:8px;background:#141414;border-radius:8px;margin-bottom:8px}
+    .msg.me{background:var(--yellow);color:#111}
+    /* admin area simple layout */
+    .admin{background:#0e0e0e;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.04);max-height:380px;overflow:auto}
+    footer{padding:20px 0;border-top:1px solid rgba(255,255,255,.03);margin-top:20px}
+    /* simple responsive */
+    @media (max-width:980px){ .hero{grid-template-columns:1fr} .portfolio{grid-template-columns:repeat(2,1fr)} .services{grid-template-columns:1fr} .pricing{grid-template-columns:1fr} .row{grid-template-columns:1fr} .chatbox{right:8px;left:8px;width:auto} }
+    /* animation util (pure CSS) */
+    .reveal{opacity:0;transform:translateY(18px);animation:reveal .6s forwards;animation-delay:0.06s}
+    @keyframes reveal{to{opacity:1;transform:none}}
+  </style>
+  <!-- Firebase SDKs (v9 compat via CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <div class="brand">
+        <div class="logo">E</div>
+        <div>
+          <strong>Editrix</strong><div style="font-size:12px;color:var(--muted)">Editing & Graphic Design</div>
+        </div>
+      </div>
+      <div class="navlinks">
+        <a href="#services">Services</a>
+        <a href="#work">Work</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+        <button id="btnLogin" class="btn">Login</button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="reveal">
+        <span style="background:rgba(255,212,0,.12);padding:6px 10px;border-radius:999px;color:#ffe16a;font-weight:700">⚡ Fast Turnaround</span>
+        <h1>Editing & <span style="color:var(--accent)">Graphic Design</span> that makes brands unforgettable.</h1>
+        <p class="lead">Hi — I'm <strong>Gurjot Singh</strong> (Editrix). I create fast, high-quality video edits and bold visual identities for creators and brands.</p>
+        <div style="margin-top:14px">
+          <a href="#contact" class="btn btn-primary">Start a Project</a>
+          <a href="#work" class="btn" style="border:1px solid rgba(255,255,255,.06);margin-left:8px">See Portfolio</a>
+        </div>
+      </div>
+      <div class="reveal" style="animation-delay:.12s">
+        <img src="https://via.placeholder.com/900x520/ffd400/111?text=EDITRIX+SHOWREEL" alt="showreel poster" style="border-radius:12px;box-shadow:var(--card-shadow)">
+      </div>
+    </header>
+
+    <!-- SERVICES -->
+    <section id="services">
+      <div style="display:flex;justify-content:space-between;align-items:end">
+        <h2>Services</h2>
+        <div style="color:var(--muted)">One-off • Monthly retainers</div>
+      </div>
+      <div class="services" style="margin-top:12px">
+        <div class="card">
+          <div style="font-weight:800">🎬 Video Editing</div>
+          <p class="lead" style="color:var(--muted)">Shorts, Reels, YouTube, Ads — captions, color grade, sound & motion graphics.</p>
+        </div>
+        <div class="card">
+          <div style="font-weight:800">🖼 Graphic Design</div>
+          <p class="lead" style="color:var(--muted)">Logos, brand kit, social templates, posters, thumbnails, print-ready files.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="work">
+      <div style="display:flex;justify-content:space-between;align-items:end">
+        <h2>Selected Work</h2>
+        <div style="color:var(--muted)">Real projects — replace images with yours</div>
+      </div>
+
+      <div class="portfolio" style="margin-top:12px">
+        <!-- 12 placeholders -->
+        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Reel+Fitness" alt=""><div style="padding:8px">Reel</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/111/ffd400?text=YouTube+Edit" alt=""><div style="padding:8px">YouTube</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Logo+Cafe" alt=""><div style="padding:8px">Logo</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/000/ffd400?text=Ad+Creative" alt=""><div style="padding:8px">Ad</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Poster" alt=""><div style="padding:8px">Poster</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/111/ffd400?text=Thumbnail+Pack" alt=""><div style="padding:8px">Thumbnails</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Brand+Kit" alt=""><div style="padding:8px">Brand kit</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/111/ffd400?text=Flyer" alt=""><div style="padding:8px">Flyer</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Social+Pack" alt=""><div style="padding:8px">Social</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/111/ffd400?text=Thumbnail+Tech" alt=""><div style="padding:8px">Thumbnail</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Corporate+Video" alt=""><div style="padding:8px">Corporate</div></div>
+        <div class="work"><img src="https://via.placeholder.com/1200x675/000/ffd400?text=Ad+Series" alt=""><div style="padding:8px">Ad Series</div></div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div style="display:flex;justify-content:space-between;align-items:end">
+        <h2>Pricing</h2>
+        <div style="color:var(--muted)">Fixed packages — custom quotes available</div>
+      </div>
+
+      <div class="pricing" style="margin-top:12px">
+        <div class="card">
+          <div style="font-weight:800">Starter</div>
+          <div class="price" style="margin-top:8px">₹2,999</div>
+          <div style="color:var(--muted);margin-top:8px">1 short or 3 graphics • 1 revision • 48–72h</div>
+          <a class="btn" href="mailto:editrix.ji@gmail.com?subject=Starter%20Package">Choose</a>
+        </div>
+        <div class="card" style="border:2px solid var(--accent)">
+          <div style="font-weight:800">Creator Pack</div>
+          <div class="price" style="margin-top:8px">₹7,999</div>
+          <div style="color:var(--muted);margin-top:8px">4 videos or 12 graphics • 2 revisions • Priority</div>
+          <a class="btn" href="mailto:editrix.ji@gmail.com?subject=Creator%20Pack">Choose</a>
+        </div>
+        <div class="card">
+          <div style="font-weight:800">Business</div>
+          <div class="price" style="margin-top:8px">₹19,999</div>
+          <div style="color:var(--muted);margin-top:8px">Monthly retainer • Strategy & priority</div>
+          <a class="btn" href="mailto:editrix.ji@gmail.com?subject=Business%20Suite">Choose</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div style="display:flex;justify-content:space-between;align-items:end">
+        <h2>Contact</h2>
+        <div style="color:var(--muted)">I'll reply as soon as I can — or use the chat</div>
+      </div>
+
+      <form id="contactForm" style="margin-top:12px" class="card">
+        <div class="row">
+          <input type="text" id="name" placeholder="Your name" required>
+          <input type="email" id="email" placeholder="Your email" required>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <select id="service" required>
+            <option value="">Choose a service</option>
+            <option>Video Editing</option>
+            <option>Graphic Design</option>
+            <option>Both / Monthly</option>
+          </select>
+          <input id="budget" placeholder="Budget (₹)">
+        </div>
+        <textarea id="message" rows="5" placeholder="Project details, links, deadlines..." style="margin-top:10px" required></textarea>
+
+        <!-- This button triggers client-side Firebase save (no JS removed) -->
+        <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+          <button id="sendBtn" class="btn btn-primary" type="button">Send Message</button>
+          <a class="btn" href="mailto:editrix.ji@gmail.com">Email Directly</a>
+        </div>
+
+        <div id="contactStatus" style="margin-top:10px;color:var(--muted)"></div>
+      </form>
+    </section>
+
+    <!-- ADMIN area (visible after login) -->
+    <section id="admin" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:end">
+        <h2>Admin — Messages</h2>
+        <div style="color:var(--muted)">Signed in as <span id="adminEmail"></span></div>
+      </div>
+      <div class="admin" id="messagesList" style="margin-top:12px">No messages yet.</div>
+    </section>
+
+    <footer>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <strong>Editrix</strong><div style="font-size:13px;color:var(--muted)">Gurjot Singh — editrix.ji@gmail.com</div>
+        </div>
+        <div style="text-align:right;color:var(--muted)">
+          <div>Instagram: <a href="https://instagram.com/editrix_ji" target="_blank" style="color:var(--accent)">editrix_ji</a></div>
+          <div>YouTube: <a href="https://www.youtube.com/@editrix_ji" target="_blank" style="color:var(--accent)">@editrix_ji</a></div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- CHAT UI (toggles open/close via small inline script) -->
+  <button id="chatToggle" class="chat-toggle">Chat with Editrix</button>
+  <div id="chatbox" class="chatbox" aria-hidden="true">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div><strong>Editrix Chat</strong><div style="font-size:12px;color:var(--muted)">Quick message</div></div>
+      <button id="chatClose" style="background:transparent;border:0;color:var(--muted);cursor:pointer">Close</button>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg">Hi! Send a quick message or use contact form. Messages will be saved to your dashboard.</div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <input id="chatInput" placeholder="Type a short message" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.04);background:transparent;color:#fff">
+      <button id="chatSend" class="btn btn-primary">Send</button>
+    </div>
+  </div>
+
+  <!-- Lightweight Firebase + logic (you will replace firebaseConfig) -->
+  <script>
+    /************************************************************************
+     * IMPORTANT:
+     * 1) Replace the firebaseConfig object with your Firebase project's config.
+     * 2) In Firebase console: enable Authentication (Email/Password) and Firestore DB.
+     * 3) To receive email notifications, add Firebase "Send Email" extension or Cloud Function.
+     ************************************************************************/
+
+    // --------- CONFIG: replace this with your Firebase project's config ----------
+    const firebaseConfig = {
+      apiKey: "REPLACE_ME",
+      authDomain: "REPLACE_ME.firebaseapp.com",
+      projectId: "REPLACE_ME",
+      storageBucket: "REPLACE_ME.appspot.com",
+      messagingSenderId: "REPLACE_ME",
+      appId: "REPLACE_ME"
+    };
+    // ---------------------------------------------------------------------------
+
+    // ADMIN email you will use to sign-in (optional)
+    const ADMIN_EMAIL = "editrix.ji@gmail.com";
+
+    // init firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // UI elements
+    const btnLogin = document.getElementById('btnLogin');
+    const contactStatus = document.getElementById('contactStatus');
+    const sendBtn = document.getElementById('sendBtn');
+    const messagesList = document.getElementById('messagesList');
+    const adminSection = document.getElementById('admin');
+    const adminEmailSpan = document.getElementById('adminEmail');
+
+    // Chat UI
+    const chatToggle = document.getElementById('chatToggle');
+    const chatbox = document.getElementById('chatbox');
+    const chatClose = document.getElementById('chatClose');
+    const chatSend = document.getElementById('chatSend');
+    const chatInput = document.getElementById('chatInput');
+    const chatMessages = document.getElementById('chatMessages');
+
+    // Simple toggle for chat
+    chatToggle.addEventListener('click', ()=> chatbox.classList.add('open'));
+    chatClose.addEventListener('click', ()=> chatbox.classList.remove('open'));
+
+    // Sign in flow: when user clicks Login, open a small prompt to sign in or create account
+    btnLogin.addEventListener('click', async () => {
+      // quick prompt for email & password (simple UX for demo)
+      const email = prompt('Enter admin email (use your Firebase account):', ADMIN_EMAIL);
+      if(!email) return;
+      const pass = prompt('Enter password (if new user, a new account will be created):', '');
+      if(!pass) return;
+      contactStatus.textContent = 'Signing in...';
+      try {
+        // Try sign in
+        await auth.signInWithEmailAndPassword(email, pass);
+        contactStatus.textContent = 'Signed in';
+      } catch(err) {
+        // If user doesn't exist, create
+        if(err.code === 'auth/user-not-found'){
+          try{
+            await auth.createUserWithEmailAndPassword(email, pass);
+            contactStatus.textContent = 'Account created and signed in';
+          }catch(e){
+            contactStatus.textContent = 'Error creating account: ' + e.message;
+            return;
+          }
+        } else {
+          contactStatus.textContent = 'Auth error: ' + err.message;
+          return;
+        }
+      }
+    });
+
+    // Monitor auth state & show admin area
+    auth.onAuthStateChanged(async user => {
+      if(user){
+        adminSection.style.display = 'block';
+        adminEmailSpan.textContent = user.email;
+        // load messages live
+        db.collection('messages').orderBy('createdAt','desc').onSnapshot(snap=>{
+          if(snap.empty){ messagesList.innerHTML = '<div style="color:var(--muted)">No messages yet</div>'; return;}
+          messagesList.innerHTML = '';
+          snap.forEach(doc=>{
+            const data = doc.data();
+            const el = document.createElement('div');
+            el.style.padding = '10px';
+            el.style.borderBottom = '1px solid rgba(255,255,255,.03)';
+            el.innerHTML = `<div style="font-weight:800">${escapeHtml(data.name||'—')} <span style="font-weight:600;color:var(--muted);font-size:13px">(${escapeHtml(data.service||'')})</span></div>
+                            <div style="color:var(--muted);font-size:13px">${escapeHtml(data.email||'')}</div>
+                            <div style="margin-top:6px">${escapeHtml(data.message||'')}</div>
+                            <div style="font-size:12px;color:var(--muted);margin-top:6px">${data.createdAt?.toDate? data.createdAt.toDate().toLocaleString() : ''}</div>`;
+            messagesList.appendChild(el);
+          });
+        });
+      } else {
+        adminSection.style.display = 'none';
+        adminEmailSpan.textContent = '';
+      }
+    });
+
+    // Save contact form to Firestore
+    sendBtn.addEventListener('click', async ()=>{
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const service = document.getElementById('service').value;
+      const budget = document.getElementById('budget').value.trim();
+      const message = document.getElementById('message').value.trim();
+      if(!name || !email || !message){ contactStatus.textContent = 'Please fill name, email and message.'; return; }
+      contactStatus.textContent = 'Sending...';
+      try{
+        await db.collection('messages').add({
+          name, email, service, budget, message,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        contactStatus.textContent = 'Message saved — I will contact you soon.';
+        // empty fields
+        document.getElementById('name').value = '';
+        document.getElementById('email').value = '';
+        document.getElementById('budget').value = '';
+        document.getElementById('message').value = '';
+        // OPTIONAL: you can set up Firebase Extensions (Send Email) to email you automatically.
+      }catch(err){
+        contactStatus.textContent = 'Error saving message: ' + err.message;
+      }
+    });
+
+    // Chat send: save small chat message to 'chats' collection
+    chatSend.addEventListener('click', async ()=>{
+      const text = chatInput.value.trim();
+      if(!text) return;
+      // append locally
+      const b = document.createElement('div'); b.className='msg me'; b.textContent = text; chatMessages.appendChild(b); chatInput.value='';
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      try{
+        await db.collection('chats').add({
+          text, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        // optionally notify admin by email via extension
+      }catch(e){ console.error('chat save err', e); }
+    });
+
+    // Simple utility to escape HTML when rendering messages
+    function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
+
+    // OPTIONAL: Load recent chat messages into chatbox
+    db.collection('chats').orderBy('createdAt','asc').limitToLast(50).onSnapshot(snap=>{
+      chatMessages.innerHTML = '';
+      snap.forEach(doc=>{
+        const data = doc.data();
+        const d = document.createElement('div');
+        d.className = 'msg';
+        d.textContent = data.text || '';
+        chatMessages.appendChild(d);
+      });
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    });
+  </script>
+</body>
+</html>
