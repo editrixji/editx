@@ -1,404 +1,381 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Editrix — Editing & Graphic Design (Gurjot Singh)</title>
-  <meta name="description" content="Editrix — Video editing & graphic design. Contact: editrix.ji@gmail.com" />
-  <meta name="theme-color" content="#ffd400" />
-  <style>
-    /* --- Simple theme and layout (yellow/black/white) --- */
-    :root{
-      --yellow:#ffd400;
-      --black:#0b0b0b;
-      --white:#ffffff;
-      --muted:#9a9a9a;
-      --accent:#ffd400;
-      --radius:12px;
-      --card-shadow: 0 10px 30px rgba(0,0,0,.35);
-      --maxw:1100px;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Arial;color:var(--white);background:linear-gradient(180deg,var(--black),#050505 70%);-webkit-font-smoothing:antialiased}
-    a{color:inherit}
-    .container{width:min(var(--maxw),94%);margin:0 auto;padding:18px}
-    nav{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo{width:44px;height:44px;border-radius:10px;background:var(--yellow);display:grid;place-items:center;color:#111;font-weight:800}
-    .navlinks{display:flex;gap:12px;align-items:center}
-    .btn{padding:8px 14px;border-radius:999px;font-weight:700;border:0;cursor:pointer}
-    .btn-primary{background:var(--yellow);color:#111}
-    .hero{display:grid;grid-template-columns:1fr 0.95fr;gap:24px;align-items:center;padding:28px 0}
-    h1{font-size:clamp(26px,4vw,44px);margin:8px 0}
-    .lead{color:var(--muted)}
-    section{padding:30px 0}
-    .services{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-    .card{background:#0f0f0f;padding:16px;border-radius:12px;box-shadow:var(--card-shadow);border:1px solid rgba(255,255,255,.03)}
-    .portfolio{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-    .work{border-radius:10px;overflow:hidden;background:#0a0a0a;border:1px solid rgba(255,255,255,.02)}
-    .work img{width:100%;height:150px;object-fit:cover;display:block;transition:transform .45s}
-    .work:hover img{transform:scale(1.06)}
-    .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .price{font-size:22px;color:var(--yellow);font-weight:800}
-    /* contact and chat */
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    input, textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:transparent;color:#fff}
-    .chat-toggle{position:fixed;right:16px;bottom:16px;background:var(--yellow);color:#111;padding:10px 14px;border-radius:999px;z-index:999;cursor:pointer}
-    .chatbox{position:fixed;right:16px;bottom:78px;width:360px;max-width:94vw;background:#0b0b0b;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.04);display:none;flex-direction:column;z-index:999}
-    .chatbox.open{display:flex}
-    .chat-messages{height:220px;overflow:auto;margin-bottom:8px}
-    .msg{padding:8px;background:#141414;border-radius:8px;margin-bottom:8px}
-    .msg.me{background:var(--yellow);color:#111}
-    /* admin area simple layout */
-    .admin{background:#0e0e0e;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.04);max-height:380px;overflow:auto}
-    footer{padding:20px 0;border-top:1px solid rgba(255,255,255,.03);margin-top:20px}
-    /* simple responsive */
-    @media (max-width:980px){ .hero{grid-template-columns:1fr} .portfolio{grid-template-columns:repeat(2,1fr)} .services{grid-template-columns:1fr} .pricing{grid-template-columns:1fr} .row{grid-template-columns:1fr} .chatbox{right:8px;left:8px;width:auto} }
-    /* animation util (pure CSS) */
-    .reveal{opacity:0;transform:translateY(18px);animation:reveal .6s forwards;animation-delay:0.06s}
-    @keyframes reveal{to{opacity:1;transform:none}}
-  </style>
-  <!-- Firebase SDKs (v9 compat via CDN) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Editrix — Video Editing & Graphic Design</title>
+<meta name="description" content="Editrix — Video & Graphic Design by Gurjot Singh. Contact: editrix.ji@gmail.com | Instagram: @editrix_ji" />
+<style>
+  :root{
+    --yellow:#ffd400; --black:#0b0b0b; --white:#ffffff; --muted:#9a9a9a;
+    --glass: rgba(255,255,255,.04); --radius:12px; --shadow:0 16px 40px rgba(0,0,0,.5);
+    --maxw:1200px;
+  }
+  *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Inter,system-ui,Arial;color:var(--white);background:linear-gradient(180deg,var(--black),#050505 75%);-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .container{width:min(var(--maxw),94%);margin:0 auto;padding:20px}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+  .brand{display:flex;gap:12px;align-items:center}
+  .logo{width:52px;height:52px;border-radius:12px;background:var(--yellow);display:grid;place-items:center;color:#111;font-weight:900;box-shadow:var(--shadow)}
+  .navlinks{display:flex;gap:16px;align-items:center}
+  .navlinks a{color:#ddd;padding:8px 10px;border-radius:8px;font-weight:600}
+  .btn{padding:10px 16px;border-radius:999px;font-weight:800;border:0;cursor:pointer}
+  .btn-primary{background:var(--yellow);color:#111;box-shadow:0 8px 24px rgba(0,0,0,.3)}
+  .hero{display:grid;grid-template-columns:1fr .95fr;gap:28px;align-items:center;padding:28px 0}
+  .badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(255,212,0,.12);color:#ffe16a;font-weight:800}
+  h1{font-size:clamp(30px,4.6vw,56px);line-height:1.02;margin:12px 0}
+  .lead{color:var(--muted);max-width:60ch}
+  .cta{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+  .stats{display:flex;gap:12px;margin-top:18px}
+  .stat{background:#0f0f0f;padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.03);text-align:center}
+  .stat b{display:block;color:var(--yellow);font-size:18px}
+  section{padding:48px 0}
+  .section-title{display:flex;align-items:end;justify-content:space-between;margin-bottom:18px}
+  .services-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .service-card{background:linear-gradient(180deg,#0f0f0f,#0b0b0b);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,.03);box-shadow:var(--shadow);transition:transform .25s}
+  .service-card:hover{transform:translateY(-8px)}
+  .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .proj{position:relative;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.04);background:#070707}
+  .proj img{width:100%;height:190px;object-fit:cover;transition:transform .5s}
+  .proj:hover img{transform:scale(1.06)}
+  .meta{position:absolute;left:12px;bottom:12px;background:linear-gradient(90deg,rgba(0,0,0,.7),transparent);padding:8px 12px;border-radius:8px;font-weight:800}
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .price-card{padding:18px;border-radius:12px;background:linear-gradient(180deg,#0f0f0f,#0b0b0b);border:1px solid rgba(255,255,255,.035);box-shadow:var(--shadow);text-align:center}
+  .price{font-size:28px;color:var(--yellow);font-weight:900}
+  .discount-banner{position:fixed;left:50%;transform:translateX(-50%);top:18px;background:linear-gradient(90deg,var(--yellow),#ffd280);color:#111;padding:10px 16px;border-radius:999px;font-weight:900;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:999}
+  .modal{position:fixed;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.6);z-index:1000;opacity:0;pointer-events:none;transition:opacity .18s}
+  .modal.open{opacity:1;pointer-events:auto}
+  .modal .panel{width:min(760px,94%);background:linear-gradient(180deg,#080808,#0a0a0a);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,.04)}
+  .chat-btn{position:fixed;right:18px;bottom:18px;background:var(--yellow);color:#111;padding:12px 14px;border-radius:999px;z-index:998;font-weight:900;cursor:pointer;box-shadow:0 14px 40px rgba(0,0,0,.25)}
+  .chat-window{position:fixed;right:18px;bottom:78px;width:360px;max-width:92vw;background:#0b0b0b;border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,.04);display:none;flex-direction:column;z-index:999}
+  .chat-window.open{display:flex}
+  .chat-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,.03)}
+  .chat-messages{height:220px;overflow:auto;margin-top:8px}
+  .bubble{padding:10px;border-radius:10px;background:#141414;margin-bottom:8px}
+  .bubble.me{background:var(--yellow);color:#111;margin-left:auto}
+  .contact-note{margin-top:10px;color:var(--muted);font-size:14px}
+  footer{padding:28px 0;border-top:1px solid rgba(255,255,255,.03);margin-top:18px}
+  .socials a{display:inline-block;margin-left:10px;color:var(--yellow);font-weight:800}
+  /* simple responsive */
+  @media (max-width:980px){
+    .hero{grid-template-columns:1fr}
+    .portfolio-grid{grid-template-columns:repeat(2,1fr)}
+    .pricing-grid{grid-template-columns:1fr}
+    .services-grid{grid-template-columns:1fr}
+  }
+  /* reveal animations (CSS only) */
+  .reveal{opacity:0;transform:translateY(18px);animation:enter .6s forwards}
+  .reveal.delay{animation-delay:.12s}
+  @keyframes enter{to{opacity:1;transform:none}}
+</style>
 </head>
 <body>
-  <div class="container">
-    <nav>
-      <div class="brand">
-        <div class="logo">E</div>
-        <div>
-          <strong>Editrix</strong><div style="font-size:12px;color:var(--muted)">Editing & Graphic Design</div>
-        </div>
-      </div>
-      <div class="navlinks">
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#contact">Contact</a>
-        <button id="btnLogin" class="btn">Login</button>
-      </div>
-    </nav>
 
-    <!-- HERO -->
-    <header class="hero">
-      <div class="reveal">
-        <span style="background:rgba(255,212,0,.12);padding:6px 10px;border-radius:999px;color:#ffe16a;font-weight:700">⚡ Fast Turnaround</span>
-        <h1>Editing & <span style="color:var(--accent)">Graphic Design</span> that makes brands unforgettable.</h1>
-        <p class="lead">Hi — I'm <strong>Gurjot Singh</strong> (Editrix). I create fast, high-quality video edits and bold visual identities for creators and brands.</p>
-        <div style="margin-top:14px">
-          <a href="#contact" class="btn btn-primary">Start a Project</a>
-          <a href="#work" class="btn" style="border:1px solid rgba(255,255,255,.06);margin-left:8px">See Portfolio</a>
-        </div>
-      </div>
-      <div class="reveal" style="animation-delay:.12s">
-        <img src="https://via.placeholder.com/900x520/ffd400/111?text=EDITRIX+SHOWREEL" alt="showreel poster" style="border-radius:12px;box-shadow:var(--card-shadow)">
-      </div>
-    </header>
+<!-- Discount banner -->
+<div class="discount-banner" id="discountBanner">Limited Offer: <strong>80% OFF</strong> — Click to claim!</div>
 
-    <!-- SERVICES -->
-    <section id="services">
-      <div style="display:flex;justify-content:space-between;align-items:end">
-        <h2>Services</h2>
-        <div style="color:var(--muted)">One-off • Monthly retainers</div>
+<div class="container">
+  <nav>
+    <div class="brand">
+      <div class="logo">E</div>
+      <div>
+        <strong style="font-size:18px">Editrix</strong>
+        <div style="font-size:12px;color:var(--muted)">Editing & Graphic Design</div>
       </div>
-      <div class="services" style="margin-top:12px">
-        <div class="card">
-          <div style="font-weight:800">🎬 Video Editing</div>
-          <p class="lead" style="color:var(--muted)">Shorts, Reels, YouTube, Ads — captions, color grade, sound & motion graphics.</p>
-        </div>
-        <div class="card">
-          <div style="font-weight:800">🖼 Graphic Design</div>
-          <p class="lead" style="color:var(--muted)">Logos, brand kit, social templates, posters, thumbnails, print-ready files.</p>
-        </div>
-      </div>
-    </section>
+    </div>
 
-    <!-- PORTFOLIO -->
-    <section id="work">
-      <div style="display:flex;justify-content:space-between;align-items:end">
-        <h2>Selected Work</h2>
-        <div style="color:var(--muted)">Real projects — replace images with yours</div>
+    <div class="navlinks">
+      <a href="#services">Services</a>
+      <a href="#work">Portfolio</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+      <a class="btn" href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="reveal">
+      <span class="badge">⚡ Fast Turnaround</span>
+      <h1>Editrix — <span style="color:var(--yellow)">Video Editing</span> & <span style="color:var(--yellow)">Graphic Design</span> that convert viewers into customers.</h1>
+      <p class="lead">Hello — I'm <strong>Gurjot Singh</strong>. I craft scroll-stopping edits and brand visuals. Professional deliverables for creators and businesses.</p>
+
+      <div class="cta">
+        <a class="btn btn-primary" href="#contact">Start a Project</a>
+        <a class="btn" href="#pricing" style="border:1px solid rgba(255,255,255,.06)">See Pricing</a>
       </div>
 
-      <div class="portfolio" style="margin-top:12px">
-        <!-- 12 placeholders -->
-        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Reel+Fitness" alt=""><div style="padding:8px">Reel</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/111/ffd400?text=YouTube+Edit" alt=""><div style="padding:8px">YouTube</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Logo+Cafe" alt=""><div style="padding:8px">Logo</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/000/ffd400?text=Ad+Creative" alt=""><div style="padding:8px">Ad</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Poster" alt=""><div style="padding:8px">Poster</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/111/ffd400?text=Thumbnail+Pack" alt=""><div style="padding:8px">Thumbnails</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Brand+Kit" alt=""><div style="padding:8px">Brand kit</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/111/ffd400?text=Flyer" alt=""><div style="padding:8px">Flyer</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Social+Pack" alt=""><div style="padding:8px">Social</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/111/ffd400?text=Thumbnail+Tech" alt=""><div style="padding:8px">Thumbnail</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/ffd400/111?text=Corporate+Video" alt=""><div style="padding:8px">Corporate</div></div>
-        <div class="work"><img src="https://via.placeholder.com/1200x675/000/ffd400?text=Ad+Series" alt=""><div style="padding:8px">Ad Series</div></div>
+      <div class="stats" style="margin-top:18px">
+        <div class="stat"><b>250+</b><span style="color:var(--muted)">Projects</span></div>
+        <div class="stat"><b>4.9★</b><span style="color:var(--muted)">Avg Rating</span></div>
+        <div class="stat"><b>72h</b><span style="color:var(--muted)">Turnaround</span></div>
       </div>
-    </section>
+    </div>
 
-    <!-- PRICING -->
-    <section id="pricing">
-      <div style="display:flex;justify-content:space-between;align-items:end">
-        <h2>Pricing</h2>
-        <div style="color:var(--muted)">Fixed packages — custom quotes available</div>
-      </div>
+    <div class="reveal delay">
+      <!-- unsplash demo image -->
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=d8f2d1a6d9d8f8b3a9e3a3b2f9c0c1a3" alt="Editing desk" style="border-radius:12px;box-shadow:var(--shadow)">
+    </div>
+  </header>
 
-      <div class="pricing" style="margin-top:12px">
-        <div class="card">
-          <div style="font-weight:800">Starter</div>
-          <div class="price" style="margin-top:8px">₹2,999</div>
-          <div style="color:var(--muted);margin-top:8px">1 short or 3 graphics • 1 revision • 48–72h</div>
-          <a class="btn" href="mailto:editrix.ji@gmail.com?subject=Starter%20Package">Choose</a>
-        </div>
-        <div class="card" style="border:2px solid var(--accent)">
-          <div style="font-weight:800">Creator Pack</div>
-          <div class="price" style="margin-top:8px">₹7,999</div>
-          <div style="color:var(--muted);margin-top:8px">4 videos or 12 graphics • 2 revisions • Priority</div>
-          <a class="btn" href="mailto:editrix.ji@gmail.com?subject=Creator%20Pack">Choose</a>
-        </div>
-        <div class="card">
-          <div style="font-weight:800">Business</div>
-          <div class="price" style="margin-top:8px">₹19,999</div>
-          <div style="color:var(--muted);margin-top:8px">Monthly retainer • Strategy & priority</div>
-          <a class="btn" href="mailto:editrix.ji@gmail.com?subject=Business%20Suite">Choose</a>
+  <!-- Services -->
+  <section id="services" class="reveal">
+    <div class="section-title">
+      <h2>Services</h2>
+      <div style="color:var(--muted)">Choose single projects or monthly retainers</div>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div style="font-weight:900">Video Editing</div>
+        <p class="lead" style="color:var(--muted)">Shorts & Reels • YouTube • Ads • Color grading • Sound design • Motion graphics</p>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <a class="btn btn-primary" href="#contact">Book Video</a>
+          <a class="btn" href="#work" style="border:1px solid rgba(255,255,255,.06)">See Examples</a>
         </div>
       </div>
-    </section>
 
-    <!-- CONTACT -->
-    <section id="contact">
-      <div style="display:flex;justify-content:space-between;align-items:end">
-        <h2>Contact</h2>
-        <div style="color:var(--muted)">I'll reply as soon as I can — or use the chat</div>
+      <div class="service-card">
+        <div style="font-weight:900">Graphic Design</div>
+        <p class="lead" style="color:var(--muted)">Logo & brand kit • Social creatives • Posters & print • Thumbnails & ads</p>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <a class="btn btn-primary" href="#contact">Book Design</a>
+          <a class="btn" href="#work" style="border:1px solid rgba(255,255,255,.06)">See Examples</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section id="work" class="reveal">
+    <div class="section-title">
+      <h2>Selected Work</h2>
+      <div style="color:var(--muted)">Real projects — replace images with your own</div>
+    </div>
+
+    <div class="portfolio-grid">
+      <div class="proj"><img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?q=80&w=1400&auto=format&fit=crop" alt=""><div class="meta">Reel — Fitness</div></div>
+      <div class="proj"><img src="https://images.unsplash.com/photo-1502633368679-6f3b07f5877f?q=80&w=1400&auto=format&fit=crop" alt=""><div class="meta">YouTube — Travel</div></div>
+      <div class="proj"><img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1400&auto=format&fit=crop" alt=""><div class="meta">Logo — Cafe</div></div>
+      <div class="proj"><img src="https://images.unsplash.com/photo-1470290378698-7c7e7a2f6f82?q=80&w=1400&auto=format&fit=crop" alt=""><div class="meta">Ad — D2C</div></div>
+      <div class="proj"><img src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1400&auto=format&fit=crop" alt=""><div class="meta">Poster — Event</div></div>
+      <div class="proj"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop" alt=""><div class="meta">Thumbnail Pack</div></div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="reveal">
+    <div class="section-title">
+      <h2>Pricing</h2>
+      <div style="color:var(--muted)">Transparent packages — custom quotes available</div>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div style="font-weight:900">Starter</div>
+        <div class="price" style="margin-top:8px">₹599 <small style="font-size:13px;color:var(--muted);text-decoration:line-through;margin-left:8px">₹2,999</small></div>
+        <p style="color:var(--muted);margin-top:8px">1 short or 3 graphics • 1 revision • 48–72h</p>
+        <button class="btn" onclick="openPayment('Starter',599)">Buy Now</button>
       </div>
 
-      <form id="contactForm" style="margin-top:12px" class="card">
-        <div class="row">
-          <input type="text" id="name" placeholder="Your name" required>
-          <input type="email" id="email" placeholder="Your email" required>
+      <div class="price-card" style="border:2px solid var(--yellow)">
+        <div style="font-weight:900">Creator Pack</div>
+        <div class="price" style="margin-top:8px">₹1599 <small style="font-size:13px;color:var(--muted);text-decoration:line-through;margin-left:8px">₹7,999</small></div>
+        <p style="color:var(--muted);margin-top:8px">4 videos or 12 graphics • 2 revisions • Priority</p>
+        <button class="btn" onclick="openPayment('Creator Pack',1599)">Buy Now</button>
+      </div>
+
+      <div class="price-card">
+        <div style="font-weight:900">Business</div>
+        <div class="price" style="margin-top:8px">₹3999 <small style="font-size:13px;color:var(--muted);text-decoration:line-through;margin-left:8px">₹19,999</small></div>
+        <p style="color:var(--muted);margin-top:8px">Monthly retainer • Strategy + priority</p>
+        <button class="btn" onclick="openPayment('Business',3999)">Buy Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="reveal">
+    <div class="section-title">
+      <h2>Contact</h2>
+      <div style="color:var(--muted)">Get a free quote within 24 hours</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 380px;gap:18px">
+      <form id="contactForm" class="service-card" onsubmit="return submitContactForm(event)">
+        <div style="font-weight:900">Send a message</div>
+        <div style="margin-top:10px" class="row">
+          <input id="cname" placeholder="Your name" required>
+          <input id="cemail" type="email" placeholder="Your email" required>
         </div>
-        <div class="row" style="margin-top:10px">
-          <select id="service" required>
-            <option value="">Choose a service</option>
+        <div style="margin-top:10px" class="row">
+          <select id="cservice" required>
+            <option value="">Select service</option>
             <option>Video Editing</option>
             <option>Graphic Design</option>
-            <option>Both / Monthly</option>
+            <option>Both</option>
           </select>
-          <input id="budget" placeholder="Budget (₹)">
+          <input id="cbudget" placeholder="Budget (₹)">
         </div>
-        <textarea id="message" rows="5" placeholder="Project details, links, deadlines..." style="margin-top:10px" required></textarea>
-
-        <!-- This button triggers client-side Firebase save (no JS removed) -->
-        <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-          <button id="sendBtn" class="btn btn-primary" type="button">Send Message</button>
+        <textarea id="cmsg" rows="5" placeholder="Project details, links, deadlines..." style="margin-top:10px" required></textarea>
+        <div style="margin-top:10px;display:flex;gap:10px">
+          <button class="btn btn-primary" type="submit">Send</button>
           <a class="btn" href="mailto:editrix.ji@gmail.com">Email Directly</a>
         </div>
-
-        <div id="contactStatus" style="margin-top:10px;color:var(--muted)"></div>
+        <div id="contactResult" style="margin-top:8px;color:var(--muted)"></div>
+        <div class="contact-note">For direct inquiries, DM on Instagram: <strong>@editrix_ji</strong></div>
       </form>
-    </section>
 
-    <!-- ADMIN area (visible after login) -->
-    <section id="admin" style="display:none">
-      <div style="display:flex;justify-content:space-between;align-items:end">
-        <h2>Admin — Messages</h2>
-        <div style="color:var(--muted)">Signed in as <span id="adminEmail"></span></div>
-      </div>
-      <div class="admin" id="messagesList" style="margin-top:12px">No messages yet.</div>
-    </section>
+      <aside class="service-card">
+        <div style="font-weight:900">Quick Links</div>
+        <div style="margin-top:12px;color:var(--muted)">
+          <div>Email: <a href="mailto:editrix.ji@gmail.com" style="color:var(--yellow)">editrix.ji@gmail.com</a></div>
+          <div style="margin-top:8px">Instagram: <a href="https://instagram.com/editrix_ji" target="_blank" style="color:var(--yellow)">@editrix_ji</a></div>
+          <div style="margin-top:8px">YouTube: <a href="https://www.youtube.com/@editrix_ji" target="_blank" style="color:var(--yellow)">@editrix_ji</a></div>
+        </div>
 
-    <footer>
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <strong>Editrix</strong><div style="font-size:13px;color:var(--muted)">Gurjot Singh — editrix.ji@gmail.com</div>
+        <div style="margin-top:12px">
+          <div style="font-weight:800;margin-bottom:6px">Admin</div>
+          <a class="btn" href="login.html">Login to Dashboard</a>
         </div>
-        <div style="text-align:right;color:var(--muted)">
-          <div>Instagram: <a href="https://instagram.com/editrix_ji" target="_blank" style="color:var(--accent)">editrix_ji</a></div>
-          <div>YouTube: <a href="https://www.youtube.com/@editrix_ji" target="_blank" style="color:var(--accent)">@editrix_ji</a></div>
-        </div>
+      </aside>
+    </div>
+  </section>
+
+  <footer>
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <strong>Editrix</strong><div style="color:var(--muted)">Gurjot Singh — editrix.ji@gmail.com</div>
       </div>
-    </footer>
+      <div class="socials">
+        <a href="https://instagram.com/editrix_ji" target="_blank">Instagram</a>
+        <a href="https://www.youtube.com/@editrix_ji" target="_blank" style="margin-left:12px">YouTube</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- Modals -->
+<div class="modal" id="discountModal" aria-hidden="true">
+  <div class="panel" style="text-align:center">
+    <h2 style="margin:0 0 8px">Special 80% Discount — For a limited time!</h2>
+    <p style="color:var(--muted)">Use promo code <strong>EDITRIX80</strong> at checkout. Click below to go to payment (coming soon).</p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:12px">
+      <button class="btn btn-primary" onclick="location.href='payment.html?code=EDITRIX80'">Go to Payment</button>
+      <button class="btn" onclick="closeModal('discountModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="paymentModal" aria-hidden="true">
+  <div class="panel" style="text-align:center">
+    <h2 style="margin:0 0 8px" id="pm-title">Payment</h2>
+    <p style="color:var(--muted)" id="pm-desc">We are setting up secure payments. This page is coming soon. For now, email or DM to confirm your order. Promo code will apply.</p>
+    <div style="display:flex;gap:12px;justify-content:center;margin-top:12px">
+      <a class="btn btn-primary" href="mailto:editrix.ji@gmail.com">Confirm by Email</a>
+      <button class="btn" onclick="closeModal('paymentModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Chat -->
+<button class="chat-btn" id="chatToggle">Chat</button>
+<div class="chat-window" id="chatWindow" aria-hidden="true">
+  <div class="chat-header">
+    <div><strong>Editrix Chat</strong><div style="font-size:12px;color:var(--muted)">Quick message (saved locally)</div></div>
+    <button onclick="toggleChat()" style="background:transparent;border:0;color:var(--muted);cursor:pointer">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="bubble">Hi! Send a quick message and I'll reply soon. For direct contact DM @editrix_ji</div>
   </div>
 
-  <!-- CHAT UI (toggles open/close via small inline script) -->
-  <button id="chatToggle" class="chat-toggle">Chat with Editrix</button>
-  <div id="chatbox" class="chatbox" aria-hidden="true">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-      <div><strong>Editrix Chat</strong><div style="font-size:12px;color:var(--muted)">Quick message</div></div>
-      <button id="chatClose" style="background:transparent;border:0;color:var(--muted);cursor:pointer">Close</button>
-    </div>
-    <div class="chat-messages" id="chatMessages">
-      <div class="msg">Hi! Send a quick message or use contact form. Messages will be saved to your dashboard.</div>
-    </div>
-    <div style="display:flex;gap:8px">
-      <input id="chatInput" placeholder="Type a short message" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.04);background:transparent;color:#fff">
-      <button id="chatSend" class="btn btn-primary">Send</button>
-    </div>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <input id="chatInput" placeholder="Type a short message" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,.04);background:transparent;color:#fff">
+    <button class="btn btn-primary" onclick="sendChat()">Send</button>
   </div>
+</div>
 
-  <!-- Lightweight Firebase + logic (you will replace firebaseConfig) -->
-  <script>
-    /************************************************************************
-     * IMPORTANT:
-     * 1) Replace the firebaseConfig object with your Firebase project's config.
-     * 2) In Firebase console: enable Authentication (Email/Password) and Firestore DB.
-     * 3) To receive email notifications, add Firebase "Send Email" extension or Cloud Function.
-     ************************************************************************/
+<script>
+  // Discount banner open modal
+  document.getElementById('discountBanner').addEventListener('click', ()=> openModal('discountModal'));
 
-    // --------- CONFIG: replace this with your Firebase project's config ----------
-    const firebaseConfig = {
-      apiKey: "REPLACE_ME",
-      authDomain: "REPLACE_ME.firebaseapp.com",
-      projectId: "REPLACE_ME",
-      storageBucket: "REPLACE_ME.appspot.com",
-      messagingSenderId: "REPLACE_ME",
-      appId: "REPLACE_ME"
-    };
-    // ---------------------------------------------------------------------------
+  function openModal(id){
+    document.getElementById(id).classList.add('open');
+    document.getElementById(id).setAttribute('aria-hidden','false');
+  }
+  function closeModal(id){
+    document.getElementById(id).classList.remove('open');
+    document.getElementById(id).setAttribute('aria-hidden','true');
+  }
 
-    // ADMIN email you will use to sign-in (optional)
-    const ADMIN_EMAIL = "editrix.ji@gmail.com";
+  // Payment open (shows modal and fills data)
+  function openPayment(plan,amount){
+    document.getElementById('pm-title').textContent = plan + ' — Payment';
+    document.getElementById('pm-desc').textContent = 'Payment gateway coming soon. To reserve this plan ('+plan+') please email editrix.ji@gmail.com with subject: BUY '+plan+' and mention promo code EDITRIX80 for 80% off.';
+    openModal('paymentModal');
+  }
 
-    // init firebase
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+  // Contact form handler: saves to localStorage + opens mailto
+  function submitContactForm(e){
+    e.preventDefault();
+    const name = document.getElementById('cname').value.trim();
+    const email = document.getElementById('cemail').value.trim();
+    const service = document.getElementById('cservice').value;
+    const budget = document.getElementById('cbudget').value.trim();
+    const message = document.getElementById('cmsg').value.trim();
+    if(!name||!email||!message){ document.getElementById('contactResult').textContent='Please fill required fields.'; return false; }
 
-    // UI elements
-    const btnLogin = document.getElementById('btnLogin');
-    const contactStatus = document.getElementById('contactStatus');
-    const sendBtn = document.getElementById('sendBtn');
-    const messagesList = document.getElementById('messagesList');
-    const adminSection = document.getElementById('admin');
-    const adminEmailSpan = document.getElementById('adminEmail');
+    const msg = {id:Date.now(), name, email, service, budget, message, created:new Date().toISOString()};
+    // save to localStorage (simple storage)
+    const store = JSON.parse(localStorage.getItem('editrix_messages')||'[]');
+    store.unshift(msg);
+    localStorage.setItem('editrix_messages', JSON.stringify(store));
+    document.getElementById('contactResult').textContent = 'Message saved locally — open Admin (Login) to view. Also your email app will open to send message.';
+    // open mail client with prefilled content
+    const subject = encodeURIComponent(`Editrix inquiry — ${service||'General'} — ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nService: ${service}\nBudget: ${budget}\n\nMessage:\n${message}`);
+    window.location.href = `mailto:editrix.ji@gmail.com?subject=${subject}&body=${body}`;
+    // clear form
+    document.getElementById('cname').value=''; document.getElementById('cemail').value=''; document.getElementById('cbudget').value=''; document.getElementById('cmsg').value=''; document.getElementById('cservice').value='';
+    return false;
+  }
 
-    // Chat UI
-    const chatToggle = document.getElementById('chatToggle');
-    const chatbox = document.getElementById('chatbox');
-    const chatClose = document.getElementById('chatClose');
-    const chatSend = document.getElementById('chatSend');
-    const chatInput = document.getElementById('chatInput');
-    const chatMessages = document.getElementById('chatMessages');
+  // Chat (save locally)
+  function toggleChat(){ document.getElementById('chatWindow').classList.toggle('open'); }
+  document.getElementById('chatToggle').addEventListener('click', toggleChat);
+  document.getElementById('chatInput').addEventListener('keydown', function(e){ if(e.key === 'Enter') sendChat(); });
 
-    // Simple toggle for chat
-    chatToggle.addEventListener('click', ()=> chatbox.classList.add('open'));
-    chatClose.addEventListener('click', ()=> chatbox.classList.remove('open'));
+  function renderChats(){
+    const c = JSON.parse(localStorage.getItem('editrix_chats')||'[]');
+    const list = document.getElementById('chatMessages');
+    list.innerHTML = c.map(m => `<div class="bubble ${m.me? 'me': ''}">${escapeHtml(m.text)}</div>`).join('') + (c.length? '' : '<div class="bubble">No previous chats</div>');
+    list.scrollTop = list.scrollHeight;
+  }
 
-    // Sign in flow: when user clicks Login, open a small prompt to sign in or create account
-    btnLogin.addEventListener('click', async () => {
-      // quick prompt for email & password (simple UX for demo)
-      const email = prompt('Enter admin email (use your Firebase account):', ADMIN_EMAIL);
-      if(!email) return;
-      const pass = prompt('Enter password (if new user, a new account will be created):', '');
-      if(!pass) return;
-      contactStatus.textContent = 'Signing in...';
-      try {
-        // Try sign in
-        await auth.signInWithEmailAndPassword(email, pass);
-        contactStatus.textContent = 'Signed in';
-      } catch(err) {
-        // If user doesn't exist, create
-        if(err.code === 'auth/user-not-found'){
-          try{
-            await auth.createUserWithEmailAndPassword(email, pass);
-            contactStatus.textContent = 'Account created and signed in';
-          }catch(e){
-            contactStatus.textContent = 'Error creating account: ' + e.message;
-            return;
-          }
-        } else {
-          contactStatus.textContent = 'Auth error: ' + err.message;
-          return;
-        }
-      }
-    });
+  function sendChat(){
+    const t = document.getElementById('chatInput').value.trim();
+    if(!t) return;
+    const arr = JSON.parse(localStorage.getItem('editrix_chats')||'[]');
+    const obj = {id:Date.now(), text:t, me:true, created:new Date().toISOString()};
+    arr.push(obj);
+    localStorage.setItem('editrix_chats', JSON.stringify(arr));
+    document.getElementById('chatInput').value='';
+    renderChats();
+    // also save to messages store for admin visibility
+    const msg = {id:Date.now(), name:'(chat)', email:'(chat)', service:'chat', budget:'', message:t, created:new Date().toISOString()};
+    const store = JSON.parse(localStorage.getItem('editrix_messages')||'[]');
+    store.unshift(msg);
+    localStorage.setItem('editrix_messages', JSON.stringify(store));
+  }
 
-    // Monitor auth state & show admin area
-    auth.onAuthStateChanged(async user => {
-      if(user){
-        adminSection.style.display = 'block';
-        adminEmailSpan.textContent = user.email;
-        // load messages live
-        db.collection('messages').orderBy('createdAt','desc').onSnapshot(snap=>{
-          if(snap.empty){ messagesList.innerHTML = '<div style="color:var(--muted)">No messages yet</div>'; return;}
-          messagesList.innerHTML = '';
-          snap.forEach(doc=>{
-            const data = doc.data();
-            const el = document.createElement('div');
-            el.style.padding = '10px';
-            el.style.borderBottom = '1px solid rgba(255,255,255,.03)';
-            el.innerHTML = `<div style="font-weight:800">${escapeHtml(data.name||'—')} <span style="font-weight:600;color:var(--muted);font-size:13px">(${escapeHtml(data.service||'')})</span></div>
-                            <div style="color:var(--muted);font-size:13px">${escapeHtml(data.email||'')}</div>
-                            <div style="margin-top:6px">${escapeHtml(data.message||'')}</div>
-                            <div style="font-size:12px;color:var(--muted);margin-top:6px">${data.createdAt?.toDate? data.createdAt.toDate().toLocaleString() : ''}</div>`;
-            messagesList.appendChild(el);
-          });
-        });
-      } else {
-        adminSection.style.display = 'none';
-        adminEmailSpan.textContent = '';
-      }
-    });
+  function escapeHtml(s){ return s.replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-    // Save contact form to Firestore
-    sendBtn.addEventListener('click', async ()=>{
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const service = document.getElementById('service').value;
-      const budget = document.getElementById('budget').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if(!name || !email || !message){ contactStatus.textContent = 'Please fill name, email and message.'; return; }
-      contactStatus.textContent = 'Sending...';
-      try{
-        await db.collection('messages').add({
-          name, email, service, budget, message,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        contactStatus.textContent = 'Message saved — I will contact you soon.';
-        // empty fields
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('budget').value = '';
-        document.getElementById('message').value = '';
-        // OPTIONAL: you can set up Firebase Extensions (Send Email) to email you automatically.
-      }catch(err){
-        contactStatus.textContent = 'Error saving message: ' + err.message;
-      }
-    });
+  // initial render
+  if(!localStorage.getItem('editrix_chats')) localStorage.setItem('editrix_chats', JSON.stringify([]));
+  renderChats();
 
-    // Chat send: save small chat message to 'chats' collection
-    chatSend.addEventListener('click', async ()=>{
-      const text = chatInput.value.trim();
-      if(!text) return;
-      // append locally
-      const b = document.createElement('div'); b.className='msg me'; b.textContent = text; chatMessages.appendChild(b); chatInput.value='';
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      try{
-        await db.collection('chats').add({
-          text, createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        // optionally notify admin by email via extension
-      }catch(e){ console.error('chat save err', e); }
-    });
-
-    // Simple utility to escape HTML when rendering messages
-    function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>"']/g, function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]; }); }
-
-    // OPTIONAL: Load recent chat messages into chatbox
-    db.collection('chats').orderBy('createdAt','asc').limitToLast(50).onSnapshot(snap=>{
-      chatMessages.innerHTML = '';
-      snap.forEach(doc=>{
-        const data = doc.data();
-        const d = document.createElement('div');
-        d.className = 'msg';
-        d.textContent = data.text || '';
-        chatMessages.appendChild(d);
-      });
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    });
-  </script>
+  // discount banner auto-open once per session
+  if(!sessionStorage.getItem('discountSeen')){ openModal('discountModal'); sessionStorage.setItem('discountSeen','1'); }
+</script>
 </body>
 </html>

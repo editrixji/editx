@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Editrix — Admin Login</title>
+<style>
+  :root{--yellow:#ffd400;--black:#0b0b0b;--white:#fff;--muted:#9a9a9a}
+  *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial;background:linear-gradient(180deg,var(--black),#050505);color:var(--white);display:grid;place-items:center;height:100vh}
+  .card{width:min(520px,94%);background:linear-gradient(180deg,#0b0b0b,#090909);padding:22px;border-radius:12px;border:1px solid rgba(255,255,255,.04);box-shadow:0 18px 50px rgba(0,0,0,.6)}
+  h2{margin:0 0 8px 0}
+  .small{color:var(--muted);margin-bottom:12px}
+  input{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:transparent;color:var(--white);margin-bottom:10px}
+  .btn{padding:10px 14px;border-radius:999px;border:0;cursor:pointer;font-weight:800}
+  .btn-primary{background:var(--yellow);color:#111}
+  .note{color:var(--muted);font-size:13px;margin-top:12px}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h2>Admin Login (Demo)</h2>
+    <div class="small">Use demo admin credentials to view messages saved locally.</div>
+
+    <form onsubmit="return doLogin(event)">
+      <input id="email" type="email" placeholder="Admin email" required value="admin@editrix.com">
+      <input id="password" type="password" placeholder="Password" required value="Pass1234">
+      <div style="display:flex;gap:10px;align-items:center;margin-top:8px">
+        <button class="btn btn-primary" type="submit">Sign In</button>
+        <a class="btn" href="index.html" style="background:transparent;border:1px solid rgba(255,255,255,.06)">Back</a>
+      </div>
+      <div id="loginResult" style="margin-top:12px;color:var(--muted)"></div>
+    </form>
+
+    <div class="note" style="margin-top:14px">This is a client-side demo login (no backend). Use credentials shown below:<br>
+    <strong>admin@editrix.com / Pass1234</strong></div>
+  </div>
+
+<script>
+  // Demo login — stores an 'auth' token in localStorage
+  function doLogin(e){
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const pass = document.getElementById('password').value;
+    // Demo credentials
+    const demoEmail = 'admin@editrix.com', demoPass = 'Pass1234';
+    if(email === demoEmail && pass === demoPass){
+      localStorage.setItem('editrix_admin', JSON.stringify({email:email, logged: true}));
+      // redirect to admin panel
+      location.href = 'admin.html';
+    } else {
+      document.getElementById('loginResult').textContent = 'Invalid credentials (demo).';
+    }
+    return false;
+  }
+</script>
+</body>
+</html>
